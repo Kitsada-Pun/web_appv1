@@ -61,7 +61,7 @@
   </div>
 </template>
 <script>
-const apiUrl = 'http://192.168.30.156:7001'
+// const apiUrl = 'http://192.168.30.156:7001'
 export default {
   data: () => ({
     dialog: false,
@@ -87,7 +87,8 @@ export default {
       console.log(this.dep)
 
       //http://localhost/7001/insert?name=username&passwd=password&dep=dep
-      const url = apiUrl + '/insert?name=' + this.username + '&passwd=' + this.password + '&dep=' + this.dep;
+      // const url = apiUrl + '/insert?name=' + this.username + '&passwd=' + this.password + '&dep=' + this.dep;
+      const url = 'http://localhost:7001/insert?name=' + this.username + '&passwd=' + this.password + '&dep=' + this.dep;
       const res = await fetch(url);
       const data = await res.json()
       console.log(data.ok)

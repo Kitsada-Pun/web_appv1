@@ -1,9 +1,4 @@
 <template>
-  <h1>EDIT DATA ID = {{ id }}</h1>
-  <v-card class="mx-auto" max-width="344">
-    <v-img height="200px" cover :src="`${baseUrl}${img}`"> </v-img>
-  </v-card>
-
   <v-form ref="form" v-model="valid" lazy-validation>
     <v-file-input v-model="file" accept="image/*"> </v-file-input>
     <v-text-field
@@ -22,7 +17,7 @@
       required
     ></v-select>
     <v-btn color="error" class="mr-4" @click="reset"> Reset Form </v-btn>
-    <v-btn color="warning" @click="doUpdate"> Save </v-btn>
+    <v-btn color="warning" @click="doSave"> Save </v-btn>
   </v-form>
 
   <div class="text-center">
@@ -32,7 +27,7 @@
           สถานะการบันทึก
         </v-card-title>
 
-        <v-card-text> แก้ไขข้อมูลสำเร็จ </v-card-text>
+        <v-card-text> บันทึกข้อมูลสำเร็จ </v-card-text>
 
         <v-divider></v-divider>
 
@@ -51,7 +46,7 @@
           สถานะการบันทึก
         </v-card-title>
 
-        <v-card-text> แก้ไขข้อมูลไม่สำเร็จ username ซ้ำ </v-card-text>
+        <v-card-text> บันทึกข้อมูลไม่สำเร็จ </v-card-text>
 
         <v-divider></v-divider>
 
@@ -69,70 +64,46 @@
 import axios from "axios";
 export default {
   data: () => ({
-    baseUrl: "http://localhost:7001/photos/",
+    file: [],
     valid: true,
-    id: "",
-    img: "",
     username: "",
     password: "",
     dep: null,
     dialog: false,
     dialog_error: false,
     items: ["IT", "computer", "electronic", "electircal power"],
-    file: [],
   }),
-  async created() {
-    console.log("id=", this.$route.query.id);
-    this.id = this.$route.query.id;
-    const url = "http://localhost:7001/listedit?id=" + this.id;
-    const res = await fetch(url);
-    const data = await res.json();
-    console.log("data=", data.datas.username);
-    this.username = data.datas.username;
-    this.password = data.datas.password;
-    this.dep = data.datas.dep;
-    this.img = data.datas.img;
-  },
-  methods: {
-    async doUpdate() {
-      console.log("save data");
-      // console.log(this.username);
-      // console.log(this.password);
-      // console.log(this.dep);
 
-      // //http://localhost/7001/insert?name=username&passwd=password&dep=dep
-      // const url =
-      //   "http://localhost:7001/update?username=" +
-      //   this.username +
-      //   "&passwd=" +
-      //   this.password +
-      //   "&dep=" +
-      //   this.dep +
-      //   "&id=" +
-      //   this.id;
-      // const res = await fetch(url);
-      // const data = await res.json();
-      // console.log(data.ok);
-      //  this.username = ""
-      //  this.password = ""
-      //  this.dep = ""
-      ///
+  methods: {
+    async doSave() {
+      console.log("save data");
+      console.log(this.username);
+      console.log(this.password);
+      console.log(this.dep);
+      //http://localhost/7001/insert?name=username&passwd=password&dep=dep
+      //  const url = 'http://localhost:7001/insert?name='+ this.username +'&passwd=' + this.password + '&dep='+ this.dep ;
+      //  const res = await fetch(url);
+      //  const data = await res.json()
+      // const std = {
+      //   username: this.username,
+      //   password: this.password,
+      //   dep: this.dep,
+      //   file: this.file[0],
+      // };
       const formData = new FormData();
       formData.append("file", this.file[0]);
       formData.append("username", this.username);
       formData.append("password", this.password);
       formData.append("dep", this.dep);
-      formData.append("id", this.id);
       // console.log("user:", std);
-      const res = await axios.post("http://localhost:7001/update", formData);
-      console.log("res.data", res.data);
+      const res = await axios.post("http://localhost:7001/add", formData);
+      // console.log(data.ok);
       this.username = "";
       this.password = "";
       this.dep = "";
 
-      ///
       // if (data.ok == 1) {
-      //   console.log("update success");
+      //   console.log("save success");
       //   this.dialog = true;
       // } else {
       //   console.log("NO success");
